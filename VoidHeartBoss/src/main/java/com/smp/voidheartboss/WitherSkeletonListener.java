@@ -11,17 +11,20 @@ import java.util.Random;
 
 public class WitherSkeletonListener implements Listener {
 
+    private final VoidHeartBoss plugin;
     private final Random random = new Random();
-    private static final double HEAD_DROP_CHANCE = 0.15; // 15%
+    private static final double HEAD_DROP_CHANCE = 0.15;
+
+    public WitherSkeletonListener(VoidHeartBoss plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void onWitherSkeletonDeath(EntityDeathEvent event) {
         if (!(event.getEntity() instanceof WitherSkeleton)) return;
 
-        // Retire les tetes vanilla (drop rate 1%)
         event.getDrops().removeIf(item -> item.getType() == Material.WITHER_SKELETON_SKULL);
 
-        // Applique notre drop rate de 15%
         if (random.nextDouble() < HEAD_DROP_CHANCE) {
             event.getDrops().add(new ItemStack(Material.WITHER_SKELETON_SKULL));
 
